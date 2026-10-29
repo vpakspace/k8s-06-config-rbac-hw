@@ -1,0 +1,10 @@
+$ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout certs/tls.key -out certs/tls.crt -subj "/CN=myapp.example.com" 2>/dev/null
+$ openssl x509 -in certs/tls.crt -noout -subject -issuer -dates
+subject=CN = myapp.example.com
+issuer=CN = myapp.example.com
+notBefore=Oct 29 15:20:27 2026 GMT
+notAfter=Oct 29 15:20:27 2027 GMT
+$ ls -l certs/
+total 8
+-rw------- 1 vladspace vladspace 1135 Oct 29 22:20 tls.crt
+-rw------- 1 vladspace vladspace 1704 Oct 29 22:20 tls.key

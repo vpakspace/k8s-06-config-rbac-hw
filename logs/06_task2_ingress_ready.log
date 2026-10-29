@@ -1,0 +1,13 @@
+$ kubectl rollout status daemonset/traefik -n ingress --timeout=300s
+daemon set "traefik" successfully rolled out
+$ kubectl get pods,svc,ingressclass -n ingress
+NAME                READY   STATUS    RESTARTS   AGE
+pod/traefik-7tkk6   1/1     Running   0          67s
+
+NAME              TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+service/traefik   LoadBalancer   10.152.183.137   <pending>     80:31619/TCP,443:32045/TCP   67s
+
+NAME                                     CONTROLLER                      PARAMETERS   AGE
+ingressclass.networking.k8s.io/nginx     traefik.io/ingress-controller   <none>       67s
+ingressclass.networking.k8s.io/public    traefik.io/ingress-controller   <none>       67s
+ingressclass.networking.k8s.io/traefik   traefik.io/ingress-controller   <none>       67s

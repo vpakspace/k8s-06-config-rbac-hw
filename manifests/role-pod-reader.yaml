@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader
+  namespace: default # Role действует только в этом namespace
+rules:
+  - apiGroups: [""] # "" — core API group, там живут pods
+    resources:
+      - pods     # просмотр подов и их описания (kubectl get / describe)
+      - pods/log # логи подов (kubectl logs)
+    verbs:
+      - get
+      - list
+      - watch

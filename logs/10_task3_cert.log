@@ -1,0 +1,12 @@
+$ openssl genrsa -out certs/developer.key 2048 2>/dev/null
+$ openssl req -new -key certs/developer.key -out certs/developer.csr -subj "/CN=developer"
+$ openssl x509 -req -in certs/developer.csr -CA /var/snap/microk8s/current/certs/ca.crt -CAkey /var/snap/microk8s/current/certs/ca.key -CAserial certs/developer-ca.srl -CAcreateserial -out certs/developer.crt -days 365
+Certificate request self-signature ok
+subject=CN = developer
+$ openssl x509 -in certs/developer.crt -noout -subject -issuer -dates
+subject=CN = developer
+issuer=CN = 10.152.183.1
+notBefore=Oct 29 15:23:06 2026 GMT
+notAfter=Oct 29 15:23:06 2027 GMT
+$ openssl verify -CAfile /var/snap/microk8s/current/certs/ca.crt certs/developer.crt
+certs/developer.crt: OK

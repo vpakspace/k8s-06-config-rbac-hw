@@ -1,0 +1,13 @@
+# Service для nginx из Pod'ов web-app: на него смотрит Ingress (задание 2)
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-app-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: web-app
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80

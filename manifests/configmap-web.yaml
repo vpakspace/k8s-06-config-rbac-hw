@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-content
+data:
+  # ключ index.html станет файлом index.html в каталоге, куда смонтирован ConfigMap
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="ru">
+    <head>
+      <meta charset="utf-8">
+      <title>Страница из ConfigMap</title>
+    </head>
+    <body>
+      <h1>Привет от Kubernetes!</h1>
+      <p>Эта страница лежит в ConfigMap web-content и подключена к nginx как файл.</p>
+    </body>
+    </html>

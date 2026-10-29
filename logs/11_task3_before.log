@@ -1,0 +1,17 @@
+$ kubectl config set-cluster microk8s --server=https://10.0.2.15:16443 --certificate-authority=/var/snap/microk8s/current/certs/ca.crt --embed-certs=true --kubeconfig=certs/developer.kubeconfig
+Cluster "microk8s" set.
+$ kubectl config set-credentials developer --client-certificate=certs/developer.crt --client-key=certs/developer.key --embed-certs=true --kubeconfig=certs/developer.kubeconfig
+User "developer" set.
+$ kubectl config set-context developer --cluster=microk8s --user=developer --kubeconfig=certs/developer.kubeconfig
+Context "developer" created.
+$ kubectl config use-context developer --kubeconfig=certs/developer.kubeconfig
+Switched to context "developer".
+$ kubectl auth whoami --kubeconfig=certs/developer.kubeconfig
+ATTRIBUTE                                           VALUE
+Username                                            developer
+Groups                                              [system:authenticated]
+Extra: authentication.kubernetes.io/credential-id   [X509SHA256=9a9ea19a719b4d087658bb837d2b26805da371e54d4d4ab6af33b52c3e8f9ca6]
+$ kubectl get pods --kubeconfig=certs/developer.kubeconfig
+Error from server (Forbidden): pods is forbidden: User "developer" cannot list resource "pods" in API group "" in the namespace "default"
+$ kubectl get pods --as=developer
+Error from server (Forbidden): pods is forbidden: User "developer" cannot list resource "pods" in API group "" in the namespace "default"

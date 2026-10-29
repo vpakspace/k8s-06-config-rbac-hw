@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-app-ingress
+spec:
+  # в MicroK8s ingress-контроллер из аддона ingress обслуживает класс public
+  ingressClassName: public
+  tls:
+    - hosts:
+        - myapp.example.com
+      secretName: tls-secret
+  rules:
+    - host: myapp.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web-app-svc
+                port:
+                  number: 80

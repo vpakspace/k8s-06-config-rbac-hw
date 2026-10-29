@@ -1,0 +1,9 @@
+$ kubectl describe pod -l app=web-app | grep -A3 "^Events:" | cut -c1-120
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  5m4s  default-scheduler  Successfully assigned default/web-app-89d67d75d-dbjb5 to vladspace-virtual
+$ kubectl describe pod -l app=web-app --as=developer | grep -A3 "^Events:"
+Events:                      <none>
+$ kubectl get events --as=developer
+Error from server (Forbidden): events is forbidden: User "developer" cannot list resource "events" in API group "" in the namespace "default"

@@ -1,0 +1,20 @@
+$ kubectl apply -f manifests/configmap-web.yaml -f manifests/deployment.yaml -f manifests/service.yaml
+configmap/web-content created
+deployment.apps/web-app created
+service/web-app-svc created
+$ kubectl rollout status deployment/web-app --timeout=120s
+Waiting for deployment "web-app" rollout to finish: 0 of 1 updated replicas are available...
+deployment "web-app" successfully rolled out
+$ kubectl get configmap web-content
+NAME          DATA   AGE
+web-content   1      2s
+$ kubectl get deploy,pods,svc
+NAME                      READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/web-app   1/1     1            1           9s
+
+NAME                          READY   STATUS    RESTARTS   AGE
+pod/web-app-89d67d75d-dbjb5   2/2     Running   0          9s
+
+NAME                  TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes    ClusterIP   10.152.183.1    <none>        443/TCP   14d
+service/web-app-svc   ClusterIP   10.152.183.42   <none>        80/TCP    9s

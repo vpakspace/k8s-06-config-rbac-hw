@@ -1,0 +1,31 @@
+$ kubectl exec deploy/web-app -c nginx -- ls -la /usr/share/nginx/html
+total 12
+drwxrwxrwx    3 root     root          4096 Oct 29 15:19 .
+drwxr-xr-x    3 root     root          4096 Apr 15  2026 ..
+drwxr-xr-x    2 root     root          4096 Oct 29 15:19 ..2026_10_29_15_19_40.239367579
+lrwxrwxrwx    1 root     root            31 Oct 29 15:19 ..data -> ..2026_10_29_15_19_40.239367579
+lrwxrwxrwx    1 root     root            17 Oct 29 15:19 index.html -> ..data/index.html
+$ kubectl exec deploy/web-app -c multitool -- curl -s localhost:80
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Страница из ConfigMap</title>
+</head>
+<body>
+  <h1>Привет от Kubernetes!</h1>
+  <p>Эта страница лежит в ConfigMap web-content и подключена к nginx как файл.</p>
+</body>
+</html>
+$ curl -s http://$(kubectl get svc web-app-svc -o jsonpath="{.spec.clusterIP}")/
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Страница из ConfigMap</title>
+</head>
+<body>
+  <h1>Привет от Kubernetes!</h1>
+  <p>Эта страница лежит в ConfigMap web-content и подключена к nginx как файл.</p>
+</body>
+</html>

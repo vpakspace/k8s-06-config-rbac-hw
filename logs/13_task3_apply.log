@@ -1,0 +1,29 @@
+$ kubectl apply -f manifests/role-pod-reader.yaml -f manifests/rolebinding-developer.yaml
+role.rbac.authorization.k8s.io/pod-reader created
+rolebinding.rbac.authorization.k8s.io/developer-pod-reader created
+$ kubectl get role,rolebinding
+NAME                                        CREATED AT
+role.rbac.authorization.k8s.io/pod-reader   2026-10-29T15:23:43Z
+
+NAME                                                         ROLE              AGE
+rolebinding.rbac.authorization.k8s.io/developer-pod-reader   Role/pod-reader   0s
+$ kubectl describe role pod-reader
+Name:         pod-reader
+Labels:       <none>
+Annotations:  <none>
+PolicyRule:
+  Resources  Non-Resource URLs  Resource Names  Verbs
+  ---------  -----------------  --------------  -----
+  pods/log   []                 []              [get list watch]
+  pods       []                 []              [get list watch]
+$ kubectl describe rolebinding developer-pod-reader
+Name:         developer-pod-reader
+Labels:       <none>
+Annotations:  <none>
+Role:
+  Kind:  Role
+  Name:  pod-reader
+Subjects:
+  Kind  Name       Namespace
+  ----  ----       ---------
+  User  developer  

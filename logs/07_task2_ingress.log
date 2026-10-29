@@ -1,0 +1,21 @@
+$ kubectl apply -f manifests/ingress-tls.yaml
+ingress.networking.k8s.io/web-app-ingress created
+$ sleep 5; kubectl get ingress
+NAME              CLASS    HOSTS               ADDRESS   PORTS     AGE
+web-app-ingress   public   myapp.example.com             80, 443   5s
+$ kubectl describe ingress web-app-ingress
+Name:             web-app-ingress
+Labels:           <none>
+Namespace:        default
+Address:          
+Ingress Class:    public
+Default backend:  <default>
+TLS:
+  tls-secret terminates myapp.example.com
+Rules:
+  Host               Path  Backends
+  ----               ----  --------
+  myapp.example.com  
+                     /   web-app-svc:80 (10.1.144.72:80)
+Annotations:         <none>
+Events:              <none>

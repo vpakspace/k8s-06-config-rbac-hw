@@ -1,0 +1,31 @@
+$ kubectl get pods --as=developer
+NAME                      READY   STATUS    RESTARTS   AGE
+web-app-89d67d75d-dbjb5   2/2     Running   0          4m43s
+$ kubectl describe pod -l app=web-app --as=developer | head -8
+Name:             web-app-89d67d75d-dbjb5
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             vladspace-virtualbox/10.0.2.15
+Start Time:       Thu, 29 Oct 2026 22:19:39 +0700
+Labels:           app=web-app
+                  pod-template-hash=89d67d75d
+$ kubectl logs -l app=web-app -c nginx --tail=3 --as=developer
+10.1.144.70 - - [29/Oct/2026:15:22:26 +0000] "GET / HTTP/1.1" 200 305 "-" "curl/8.5.0" "10.0.2.15"
+10.1.144.70 - - [29/Oct/2026:15:22:26 +0000] "GET / HTTP/1.1" 200 305 "-" "curl/8.5.0" "10.0.2.15"
+10.1.144.70 - - [29/Oct/2026:15:22:26 +0000] "GET / HTTP/1.1" 200 305 "-" "curl/8.5.0" "10.0.2.15"
+$ kubectl delete pod -l app=web-app --as=developer
+Error from server (Forbidden): pods "web-app-89d67d75d-dbjb5" is forbidden: User "developer" cannot delete resource "pods" in API group "" in the namespace "default"
+$ kubectl get deployments --as=developer
+Error from server (Forbidden): deployments.apps is forbidden: User "developer" cannot list resource "deployments" in API group "apps" in the namespace "default"
+$ kubectl get pods -n kube-system --as=developer
+Error from server (Forbidden): pods is forbidden: User "developer" cannot list resource "pods" in API group "" in the namespace "kube-system"
+$ kubectl get secrets --as=developer
+Error from server (Forbidden): secrets is forbidden: User "developer" cannot list resource "secrets" in API group "" in the namespace "default"
+$ kubectl auth can-i --list --as=developer -n default | grep -v "^  "
+Resources                                       Non-Resource URLs   Resource Names   Verbs
+selfsubjectreviews.authentication.k8s.io        []                  []               [create]
+selfsubjectaccessreviews.authorization.k8s.io   []                  []               [create]
+selfsubjectrulesreviews.authorization.k8s.io    []                  []               [create]
+pods/log                                        []                  []               [get list watch]
+pods                                            []                  []               [get list watch]

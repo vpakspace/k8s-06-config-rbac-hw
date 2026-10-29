@@ -1,0 +1,16 @@
+$ kubectl create role tmp-describe --verb=describe --resource=pods
+Warning: 'describe' is not a standard resource verb
+role.rbac.authorization.k8s.io/tmp-describe created
+$ kubectl create rolebinding tmp-describe --role=tmp-describe --user=tmpuser
+rolebinding.rbac.authorization.k8s.io/tmp-describe created
+$ kubectl auth can-i describe pods --as=tmpuser
+Warning: verb 'describe' is not a known verb
+
+yes
+$ kubectl auth can-i get pods --as=tmpuser
+no
+$ kubectl describe $(kubectl get pods -l app=web-app -o name) --as=tmpuser
+Error from server (Forbidden): pods "web-app-89d67d75d-dbjb5" is forbidden: User "tmpuser" cannot get resource "pods" in API group "" in the namespace "default"
+$ kubectl delete rolebinding,role tmp-describe
+rolebinding.rbac.authorization.k8s.io "tmp-describe" deleted from default namespace
+role.rbac.authorization.k8s.io "tmp-describe" deleted from default namespace

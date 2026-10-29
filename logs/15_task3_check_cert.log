@@ -1,0 +1,15 @@
+$ kubectl auth whoami --kubeconfig=certs/developer.kubeconfig
+ATTRIBUTE                                           VALUE
+Username                                            developer
+Groups                                              [system:authenticated]
+Extra: authentication.kubernetes.io/credential-id   [X509SHA256=9a9ea19a719b4d087658bb837d2b26805da371e54d4d4ab6af33b52c3e8f9ca6]
+$ kubectl get pods --kubeconfig=certs/developer.kubeconfig
+NAME                      READY   STATUS    RESTARTS   AGE
+web-app-89d67d75d-dbjb5   2/2     Running   0          4m55s
+$ kubectl logs -l app=web-app -c multitool --tail=2 --kubeconfig=certs/developer.kubeconfig
+Replacing default HTTP port (80) with the value specified by the user - (HTTP_PORT: 1180).
+Replacing default HTTPS port (443) with the value specified by the user - (HTTPS_PORT: 11443).
+$ kubectl delete pod -l app=web-app --kubeconfig=certs/developer.kubeconfig
+Error from server (Forbidden): pods "web-app-89d67d75d-dbjb5" is forbidden: User "developer" cannot delete resource "pods" in API group "" in the namespace "default"
+$ kubectl get secrets --kubeconfig=certs/developer.kubeconfig
+Error from server (Forbidden): secrets is forbidden: User "developer" cannot list resource "secrets" in API group "" in the namespace "default"

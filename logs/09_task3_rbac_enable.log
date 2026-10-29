@@ -1,0 +1,16 @@
+$ microk8s enable rbac
+Infer repository core for addon rbac
+Enabling RBAC
+Reconfiguring apiserver
+Restarting apiserver
+RBAC is enabled
+$ microk8s status --wait-ready --timeout 120 | head -3
+microk8s is running
+high-availability: no
+  datastore master nodes: 127.0.0.1:19001
+$ kubectl get nodes
+NAME                   STATUS   ROLES    AGE   VERSION
+vladspace-virtualbox   Ready    <none>   14d   v1.35.6
+$ kubectl get clusterrolebinding cluster-admin -o wide
+NAME            ROLE                        AGE   USERS   GROUPS           SERVICEACCOUNTS
+cluster-admin   ClusterRole/cluster-admin   2s            system:masters   

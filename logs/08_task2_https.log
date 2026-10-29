@@ -1,0 +1,29 @@
+$ curl -sk --resolve myapp.example.com:443:10.0.2.15 https://myapp.example.com/
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Страница из ConfigMap</title>
+</head>
+<body>
+  <h1>Привет от Kubernetes!</h1>
+  <p>Эта страница лежит в ConfigMap web-content и подключена к nginx как файл.</p>
+</body>
+</html>
+$ curl -vk --resolve myapp.example.com:443:10.0.2.15 https://myapp.example.com/ 2>&1 | grep -E "subject:|issuer:|SSL connection|< HTTP/"
+* SSL connection using TLSv1.3 / TLS_AES_128_GCM_SHA256 / X25519 / RSASSA-PSS
+*  subject: CN=myapp.example.com
+*  issuer: CN=myapp.example.com
+< HTTP/2 200 
+$ curl -sS --resolve myapp.example.com:443:10.0.2.15 https://myapp.example.com/
+curl: (60) SSL certificate problem: self-signed certificate
+More details here: https://curl.se/docs/sslcerts.html
+
+curl failed to verify the legitimacy of the server and therefore could not
+establish a secure connection to it. To learn more about this situation and
+how to fix it, please visit the web page mentioned above.
+$ curl -s --cacert certs/tls.crt --resolve myapp.example.com:443:10.0.2.15 https://myapp.example.com/ | grep "<h1>"
+  <h1>Привет от Kubernetes!</h1>
+$ curl -vk --resolve other.example.com:443:10.0.2.15 https://other.example.com/ 2>&1 | grep -E "subject:|< HTTP/"
+*  subject: CN=TRAEFIK DEFAULT CERT
+< HTTP/2 404 
